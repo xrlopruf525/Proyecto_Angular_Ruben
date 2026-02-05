@@ -1,0 +1,13 @@
+<h2>Listado de Libros</h2>
+<ul>
+  @for (libro of libros; track libro.id) {
+    @if (libro.coverUrl) {
+      <li>
+        <img [src]="libro.coverUrl" alt="{{libro.title}}" width="50">
+        {{ libro.title }} - {{ libro.author }}
+      </li>
+    }
+  }
+</ul>
+
+<button class="btn btn-primary" (click)="navigateToHome()">Volver al inicio</button>
