@@ -10,8 +10,6 @@ export interface Libro {
   coverUrl?: string; // portada opcional
   id: string; // id para detalle
   description?: string;
-  first_publish_date?: string;
-  number_of_pages?: number | string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -48,8 +46,6 @@ export class LibrosService {
         description: res.description
                      ? (typeof res.description === 'string' ? res.description : res.description.value)
                      : '', // description puede venir raro
-        first_publish_date: res.first_publish_date || 'Desconocido',
-        number_of_pages: res.number_of_pages || 'Desconocido',
         id: id
       }))
     );

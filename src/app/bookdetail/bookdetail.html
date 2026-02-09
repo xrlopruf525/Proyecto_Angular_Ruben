@@ -1,36 +1,55 @@
-<div class="container mt-4">
-
+<div class="container mt-5">
+  
   @if (cargando()) {
-    <!-- mientras carga -->
-    <p>Cargando libro...</p>
+    <!-- spinner centrado -->
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status"></div>
+    </div>
+  } @else if (libro()) {
+    
+    <!-- row = fila, bg-white fondo, p-4 padding, shadow sombra, rounded bordes -->
+    <div class="row bg-white p-4 shadow rounded">
+      
+      <!-- col-md-4 = 4/12 en pantallas medianas -->
+      <div class="col-md-4 text-center mb-4">
+        @if (libro()?.coverUrl) {
+          <!-- img-fluid = responsive, rounded + shadow = estilos bootstrap -->
+          <img [src]="libro()?.coverUrl" class="img-fluid rounded shadow" alt="Portada">
+        } @else {
+          <!-- caja simple si no hay imagen -->
+          <div class="bg-light rounded p-5">Sin imagen</div>
+        }
+      </div>
+
+      <!-- col-md-8 = 8/12 -->
+      <div class="col-md-8">
+        <!-- display-5 = tamaño grande, fw-bold = negrita -->
+        <h1 class="display-5 fw-bold">{{ libro()?.title }}</h1>
+        <!-- text-primary color azul, fs-4 tamaño fuente -->
+        <p class="text-primary fs-4">Autor: {{ libro()?.author }}</p>
+        
+        <hr> 
+        <!-- my-4 = margen vertical -->
+        <div class="my-4">
+          <h5>Descripción:</h5>
+          <!-- lh-lg = line-height grande -->
+          <p class="lh-lg">{{ libro()?.description || 'No hay descripción disponible para este libro.' }}</p>
+        </div>
+
+        <!-- d-flex = flex, gap-2 = espacio entre botones -->
+        <div class="d-flex gap-2 mt-4">
+          <a routerLink="/books" class="btn btn-secondary">
+            Volver al listado
+          </a>
+          <button class="btn btn-primary">
+            Añadir a favoritos
+          </button>
+        </div>
+      </div>
+
+    </div>
   } @else {
-
-    @if (libro()) {
-      <!-- si hay libro, muestro todo -->
-      <h2>{{ libro()?.title }}</h2>
-      <p><strong>Autor:</strong> {{ libro()?.author }}</p>
-
-      @if (libro()?.coverUrl) {
-        <!-- portada si existe -->
-        <img [src]="libro()?.coverUrl" class="img-fluid mb-3">
-      } 
-
-      @if (libro()?.description) {
-        <!-- descripción si existe -->
-        <h5>Descripción:</h5>
-        <p>{{ libro()?.description }}</p>
-      } 
-
-      <p><strong>Año de publicación:</strong> {{ libro()?.first_publish_date }}</p>
-      <p><strong>Número de páginas:</strong> {{ libro()?.number_of_pages }}</p>
-
-      <!-- botón para volver -->
-      <a [routerLink]="['/books']" class="btn btn-secondary mt-3">Volver al listado</a>
-    } @else {
-      <!-- si no hay libro -->
-      <p>Libro no encontrado.</p>
-    } 
-
-  } 
-
+    <!-- alert-warning = aviso amarillo -->
+    <div class="alert alert-warning mt-4">No se ha encontrado el libro seleccionado.</div>
+  }
 </div>

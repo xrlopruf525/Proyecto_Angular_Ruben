@@ -1,48 +1,51 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Buscar Libros</h2>
+  <h2 class="mb-4">Buscador de Libros</h2>
 
-  <!-- Inputs de búsqueda -->
-  <div class="row g-2 mb-3">
+  <div class="row g-3 mb-4 p-3 bg-white shadow-sm rounded">
     <div class="col-md-5">
-      <input type="text" placeholder="Título" class="form-control" [(ngModel)]="filtroTitulo">
+      <input type="text" placeholder="Buscar por título..." class="form-control" [(ngModel)]="filtroTitulo">
     </div>
     <div class="col-md-5">
-      <input type="text" placeholder="Autor" class="form-control" [(ngModel)]="filtroAutor">
+      <input type="text" placeholder="Buscar por autor..." class="form-control" [(ngModel)]="filtroAutor">
     </div>
     <div class="col-md-2">
-      <button class="btn btn-primary w-100" (click)="buscarLibros()">Filtrar</button>
+      <button class="btn btn-primary w-100" (click)="buscarLibros()">
+        Buscar
+      </button>
     </div>
   </div>
 
-  <!-- mensaje de carga -->
   @if (cargando()) {
-    <p>Cargando libros...</p>
+    <div class="text-center my-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p>Buscando en la biblioteca...</p>
+    </div>
   } @else {
 
-    @if (libros().length > 0) {
-      <div class="row row-cols-1 row-cols-md-3 g-3">
-        @for (libro of libros(); track libro.id) {
-          <div class="col">
-            <div class="card h-100 shadow-sm">
-              @if (libro.coverUrl) {
-                <img [src]="libro.coverUrl" class="card-img-top" style="height:250px; object-fit:cover;">
-              } @else {
-                <div class="d-flex align-items-center justify-content-center bg-secondary text-white" style="height:250px;">
-                  Sin imagen
-                </div>
-              }
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">{{ libro.title }}</h5>
-                <p class="card-text text-muted mb-3">{{ libro.author }}</p>
-                <a [routerLink]="['/books', libro.id]" class="btn btn-outline-primary mt-auto">Ver detalle</a>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      @for (libro of libros(); track libro.id) {
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0">
+            
+            @if (libro.coverUrl) {
+              <img [src]="libro.coverUrl" class="card-img-top" style="height: 250px; object-fit: contain; background: #f8f9fa;">
+            } @else {
+              <div class="bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                <span class="text-muted">Sin portada</span>
               </div>
+            }
+
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-truncate">{{ libro.title }}</h5>
+              <p class="card-text text-muted small">{{ libro.author }}</p>
+              
+              <a [routerLink]="['/books', libro.id]" class="btn btn-outline-primary mt-auto">
+                Ver detalles
+              </a>
             </div>
           </div>
-        }
-      </div>
-    } 
+        </div>
+      }
+    </div>
   }
-
-  <!-- botón volver -->
-  <button class="btn btn-secondary mt-4" (click)="navigateToHome()">Volver al inicio</button>
 </div>

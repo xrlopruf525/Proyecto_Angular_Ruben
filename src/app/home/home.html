@@ -1,48 +1,73 @@
-<div class="container mt-4">
-  <h1 class="mb-3">Bienvenido a BookApp</h1>
-  <p class="text-muted">Explora libros destacados de nuestra colección.</p>
+<!-- container centra y da ancho, mt-4 margen arriba, p-5 padding, bg-primary fondo azul, text-white texto blanco, rounded bordes -->
+<div class="container mt-4 p-5 bg-primary text-white rounded">
+  <h1>Mi Biblioteca Online</h1>
+  <p>Esta es una aplicación para buscar libros usando una API externa y guardar tus favoritos.</p>
+</div>
 
-  @if (libros().length > 0) {
-    <div id="librosCarousel" class="carousel slide" data-bs-ride="carousel">
+<!-- otro container separado -->
+<div class="container mt-5">
+  <!-- row crea fila del grid -->
+  <div class="row">
+    
+    <!-- col-md-6 = media pantalla, 6/12 columnas -->
+    <div class="col-md-6">
+      <h3>Sobre el proyecto</h3>
+      <p>He desarrollado esta web en Angular para poner en práctica:</p>
+      <ul>
+        <li>Uso de componentes y rutas.</li>
+        <li>Consumo de APIs (Open Library).</li>
+        <li>Formularios y validaciones.</li>
+      </ul>
+      <!-- btn y btn-outline-primary son estilos bootstrap -->
+      <button routerLink="/books" class="btn btn-outline-primary">Ver todos los libros</button>
+    </div>
 
-      <!-- contenedor interno del carrusel -->
-      <div class="carousel-inner text-center">
-
-        @for (libro of libros(); track libro.id) {
-          <!-- item del carrusel, active solo en el primero -->
-          <div class="carousel-item" [class.active]="libro === libros()[0]">
+    <!-- otra columna -->
+    <div class="col-md-6">
+      <h3 class="text-center">Destacados</h3>
+      
+      @if (libros().length > 0) {
+        <!-- carousel slide = carrusel bootstrap, bg-light fondo, p-3 padding, rounded bordes, shadow-sm sombra -->
+        <div id="carruselLibros" class="carousel slide bg-light p-3 rounded shadow-sm" data-bs-ride="carousel">
+          <!-- contenedor interno del carrusel -->
+          <div class="carousel-inner">
             
-            @if (libro.coverUrl) {
-              <!-- portada, centrada y con tamaño fijo -->
-              <img [src]="libro.coverUrl" 
-                   class="d-block mx-auto mb-2 rounded" 
-                   style="height:400px; object-fit:cover;">
-            } @else {
-              <!-- placeholder si no hay imagen -->
-              <div class="d-flex align-items-center justify-content-center bg-secondary text-white rounded" style="height:250px;">
-                Sin imagen
+            @for (libro of libros(); track libro.id; let i = $index) {
+              <!-- carousel-item es cada slide, el primero va active -->
+              <div class="carousel-item" [class.active]="i === 0">
+                <div class="text-center">
+                  <!-- imagen con tamaño fijo -->
+                  <img [src]="libro.coverUrl" style="height: 200px;" alt="Portada">
+                  <h5 class="mt-2">{{ libro.title }}</h5>
+                </div>
               </div>
             }
 
-            <!-- título y autor -->
-            <h5>{{ libro.title }}</h5>
-            <p class="text-muted">{{ libro.author }}</p>
-
           </div>
-        }
-      </div>
-
-      <!-- botones prev/next de Bootstrap -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#librosCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon bg-dark rounded-circle"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#librosCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon bg-dark rounded-circle"></span>
-      </button>
-
+          <!-- botones prev/next del carrusel -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#carruselLibros" data-bs-slide="prev">
+            <!-- icono con fondo oscuro y redondo -->
+            <span class="carousel-control-prev-icon bg-dark rounded-circle"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carruselLibros" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-circle"></span>
+          </button>
+        </div>
+      }
     </div>
-  } @else {
-    <!-- mientras no hay libros -->
-    <p>Cargando libros destacados...</p>
-  }
+
+  </div>
 </div>
+
+<!-- footer con padding, fondo claro y borde -->
+<footer class="mt-5 p-4 bg-light text-center border-top">
+  <div class="container">
+    <p class="text-muted">© 2026 - Creado por Ruben Lopez</p>
+    <p>
+      <!-- links con margen derecho -->
+      <a routerLink="/home" class="me-3">Inicio</a>
+      <a routerLink="/books" class="me-3">Libros</a>
+      <a routerLink="/contacto">Contacto</a>
+    </p>
+  </div>
+</footer>

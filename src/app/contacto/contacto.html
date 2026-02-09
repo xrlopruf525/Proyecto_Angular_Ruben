@@ -1,0 +1,58 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    
+    <div class="col-md-7 bg-white p-4 shadow rounded border-top border-primary border-4">
+      
+      <h2 class="mb-3">Contacto</h2>
+      <p class="text-muted">Rellena los datos para enviarme un correo real.</p>
+
+      @if (enviadoConExito()) {
+        <div class="alert alert-success mt-3 mb-4 shadow-sm">
+          <strong>¡Enviado!</strong> Tu mensaje ha llegado a mi bandeja de entrada.
+        </div>
+      }
+
+      <form [formGroup]="contactoForm" (ngSubmit)="enviarFormulario()">
+        
+        <div class="mb-3">
+          <label class="form-label fw-bold small text-uppercase">Nombre</label>
+          <input type="text" formControlName="nombre" class="form-control" placeholder="Escribe tu nombre">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small text-uppercase">Email</label>
+          <input type="email" formControlName="email" class="form-control" placeholder="ejemplo@correo.com">
+          
+          @if (contactoForm.get('email')?.invalid && contactoForm.get('email')?.touched) {
+            <small class="text-danger">Introduce un correo electrónico válido.</small>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small text-uppercase">Asunto</label>
+          <select formControlName="asunto" class="form-select">
+            <option value="Duda">Tengo una duda</option>
+            <option value="Sugerencia">Sugerencia para la App</option>
+            <option value="Error">Error en la App</option>
+            <option value="Otro">Otro motivo</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-bold small text-uppercase">Mensaje</label>
+          <textarea formControlName="mensaje" class="form-control" rows="4" placeholder="¿En qué puedo ayudarte?"></textarea>
+          
+          @if (contactoForm.get('mensaje')?.invalid && contactoForm.get('mensaje')?.touched) {
+            <small class="text-danger">El mensaje es demasiado corto.</small>
+          }
+        </div>
+
+        <button type="submit" [disabled]="contactoForm.invalid" class="btn btn-primary w-100 py-2">
+          Enviar Correo 
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
