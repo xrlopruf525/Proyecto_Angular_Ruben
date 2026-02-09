@@ -1,0 +1,36 @@
+<div class="container mt-4">
+
+  @if (cargando()) {
+    <!-- mientras carga -->
+    <p>Cargando libro...</p>
+  } @else {
+
+    @if (libro()) {
+      <!-- si hay libro, muestro todo -->
+      <h2>{{ libro()?.title }}</h2>
+      <p><strong>Autor:</strong> {{ libro()?.author }}</p>
+
+      @if (libro()?.coverUrl) {
+        <!-- portada si existe -->
+        <img [src]="libro()?.coverUrl" class="img-fluid mb-3">
+      } 
+
+      @if (libro()?.description) {
+        <!-- descripción si existe -->
+        <h5>Descripción:</h5>
+        <p>{{ libro()?.description }}</p>
+      } 
+
+      <p><strong>Año de publicación:</strong> {{ libro()?.first_publish_date }}</p>
+      <p><strong>Número de páginas:</strong> {{ libro()?.number_of_pages }}</p>
+
+      <!-- botón para volver -->
+      <a [routerLink]="['/books']" class="btn btn-secondary mt-3">Volver al listado</a>
+    } @else {
+      <!-- si no hay libro -->
+      <p>Libro no encontrado.</p>
+    } 
+
+  } 
+
+</div>

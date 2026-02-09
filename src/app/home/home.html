@@ -1,4 +1,48 @@
 <div class="container mt-4">
-  <h1>Bienvenido a BookApp</h1>
-  <p>Esta es la página de inicio de tu proyecto de libros.</p>
+  <h1 class="mb-3">Bienvenido a BookApp</h1>
+  <p class="text-muted">Explora libros destacados de nuestra colección.</p>
+
+  @if (libros().length > 0) {
+    <div id="librosCarousel" class="carousel slide" data-bs-ride="carousel">
+
+      <!-- contenedor interno del carrusel -->
+      <div class="carousel-inner text-center">
+
+        @for (libro of libros(); track libro.id) {
+          <!-- item del carrusel, active solo en el primero -->
+          <div class="carousel-item" [class.active]="libro === libros()[0]">
+            
+            @if (libro.coverUrl) {
+              <!-- portada, centrada y con tamaño fijo -->
+              <img [src]="libro.coverUrl" 
+                   class="d-block mx-auto mb-2 rounded" 
+                   style="height:400px; object-fit:cover;">
+            } @else {
+              <!-- placeholder si no hay imagen -->
+              <div class="d-flex align-items-center justify-content-center bg-secondary text-white rounded" style="height:250px;">
+                Sin imagen
+              </div>
+            }
+
+            <!-- título y autor -->
+            <h5>{{ libro.title }}</h5>
+            <p class="text-muted">{{ libro.author }}</p>
+
+          </div>
+        }
+      </div>
+
+      <!-- botones prev/next de Bootstrap -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#librosCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#librosCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle"></span>
+      </button>
+
+    </div>
+  } @else {
+    <!-- mientras no hay libros -->
+    <p>Cargando libros destacados...</p>
+  }
 </div>

@@ -1,13 +1,37 @@
-<h2>Listado de Libros</h2>
-<ul>
-  @for (libro of libros; track libro.id) {
-    @if (libro.coverUrl) {
-      <li>
-        <img [src]="libro.coverUrl" alt="{{libro.title}}" width="50">
-        {{ libro.title }} - {{ libro.author }}
-      </li>
-    }
-  }
-</ul>
+<div class="container mt-4">
+  <h2>Buscar Libros</h2>
 
-<button class="btn btn-primary" (click)="navigateToHome()">Volver al inicio</button>
+  <!-- Inputs de búsqueda -->
+  <div class="mb-3">
+    <input type="text" placeholder="Título" class="form-control mb-2"
+           [(ngModel)]="filtroTitulo">
+    <input type="text" placeholder="Autor" class="form-control mb-2"
+           [(ngModel)]="filtroAutor">
+    <button class="btn btn-primary" (click)="buscarLibros()">Filtrar</button>
+  </div>
+
+  @if (cargando()) {
+    <!-- texto mientras carga -->
+    <p>Cargando libros...</p>
+  } @else {
+    @if (libros().length > 0) {
+      <ul>
+        @for (libro of libros(); track libro.id) {
+          <li class="mb-2">
+            @if (libro.coverUrl) {
+              <!-- mini portada si existe -->
+              <img [src]="libro.coverUrl" width="50" class="me-2">
+            } 
+            <!-- link al detalle -->
+            <a [routerLink]="['/books', libro.id]">
+             {{ libro.title }} - {{ libro.author }}
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  } 
+
+  <!-- botón volver -->
+  <button class="btn btn-secondary mt-3" (click)="navigateToHome()">Volver al inicio</button>
+</div>

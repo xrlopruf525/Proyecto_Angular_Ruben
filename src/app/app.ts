@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +9,11 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('Proyecto_Angular_Ruben');
+  constructor(private router: Router) {}
+
+  goToBooks() {
+    console.log('Click en Libros'); // debug en consola
+    this.router.navigateByUrl('/books'); // fuerza recarga del componente
+  }
 }
+
