@@ -1,37 +1,48 @@
 <div class="container mt-4">
-  <h2>Buscar Libros</h2>
+  <h2 class="mb-4">Buscar Libros</h2>
 
   <!-- Inputs de búsqueda -->
-  <div class="mb-3">
-    <input type="text" placeholder="Título" class="form-control mb-2"
-           [(ngModel)]="filtroTitulo">
-    <input type="text" placeholder="Autor" class="form-control mb-2"
-           [(ngModel)]="filtroAutor">
-    <button class="btn btn-primary" (click)="buscarLibros()">Filtrar</button>
+  <div class="row g-2 mb-3">
+    <div class="col-md-5">
+      <input type="text" placeholder="Título" class="form-control" [(ngModel)]="filtroTitulo">
+    </div>
+    <div class="col-md-5">
+      <input type="text" placeholder="Autor" class="form-control" [(ngModel)]="filtroAutor">
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100" (click)="buscarLibros()">Filtrar</button>
+    </div>
   </div>
 
+  <!-- mensaje de carga -->
   @if (cargando()) {
-    <!-- texto mientras carga -->
     <p>Cargando libros...</p>
   } @else {
+
     @if (libros().length > 0) {
-      <ul>
+      <div class="row row-cols-1 row-cols-md-3 g-3">
         @for (libro of libros(); track libro.id) {
-          <li class="mb-2">
-            @if (libro.coverUrl) {
-              <!-- mini portada si existe -->
-              <img [src]="libro.coverUrl" width="50" class="me-2">
-            } 
-            <!-- link al detalle -->
-            <a [routerLink]="['/books', libro.id]">
-             {{ libro.title }} - {{ libro.author }}
-            </a>
-          </li>
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              @if (libro.coverUrl) {
+                <img [src]="libro.coverUrl" class="card-img-top" style="height:250px; object-fit:cover;">
+              } @else {
+                <div class="d-flex align-items-center justify-content-center bg-secondary text-white" style="height:250px;">
+                  Sin imagen
+                </div>
+              }
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ libro.title }}</h5>
+                <p class="card-text text-muted mb-3">{{ libro.author }}</p>
+                <a [routerLink]="['/books', libro.id]" class="btn btn-outline-primary mt-auto">Ver detalle</a>
+              </div>
+            </div>
+          </div>
         }
-      </ul>
-    }
-  } 
+      </div>
+    } 
+  }
 
   <!-- botón volver -->
-  <button class="btn btn-secondary mt-3" (click)="navigateToHome()">Volver al inicio</button>
+  <button class="btn btn-secondary mt-4" (click)="navigateToHome()">Volver al inicio</button>
 </div>
