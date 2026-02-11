@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 // Importamos lo necesario para formularios (Reactive)
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import emailjs from '@emailjs/browser';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-contacto',
@@ -22,16 +23,14 @@ export class Contacto {
     mensaje: new FormControl('', [Validators.required, Validators.minLength(10)]),
   });
 
+
   async enviarFormulario() {
     if (this.contactoForm.valid) {
-      
-      // Tus credenciales de EmailJS
       const serviceID = 'service_kln1tzf';
       const templateID = 'template_5j5iijh'; 
       const publicKey = '2Z6NvX-E_ZiOUv-t8';   
 
       try {
-        // Enviamos los datos a la plantilla de EmailJS
         await emailjs.send(
           serviceID, 
           templateID, 
@@ -45,13 +44,22 @@ export class Contacto {
           publicKey
         );
 
-        // Si todo sale bien, activamos el mensaje de éxito y limpiamos el form
-        this.enviadoConExito.set(true);
-        this.contactoForm.reset({
+        Swal.fire({
+          icon: 'success',
+          title: '¡Mensaje enviado!',
+          text: 'Te responderemos lo antes posible.',
+          confirmButtonColor: '#3085d6'
         });
+
+        this.contactoForm.reset();
 
       } catch (error) {
         console.error('Error al enviar:', error);
+                Swal.fire({
+          icon: 'error',
+          title: 'Error al enviar',
+          text: 'Hubo un problema con el servidor de correo. Inténtalo más tarde.',
+        });
       }
     }
   }

@@ -41,9 +41,11 @@
           <a routerLink="/books" class="btn btn-secondary">
             Volver al listado
           </a>
-          <button class="btn btn-primary">
-            Añadir a favoritos
-          </button>
+          <button 
+            (click)="agregarAFavoritos()" 
+            class="btn btn-danger shadow-sm mt-3">
+            <i class="bi bi-heart-fill"></i> Añadir a Favoritos 
+            </button>
         </div>
       </div>
 

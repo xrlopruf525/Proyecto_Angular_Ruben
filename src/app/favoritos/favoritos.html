@@ -1,0 +1,26 @@
+<div class="container mt-4">
+  <h2 class="text-center">Mis Favoritos</h2>
+
+  <div class="row">
+    @for (libro of misFavoritos; track libro.id_db) {
+      <div class="col-md-3 mb-4">
+        
+        <div class="card h-100 p-2 text-center">
+          <img [src]="libro.imagen" style="height: 120px; object-fit: contain;">
+          
+          <div class="card-body">
+            <p class="fw-bold small">{{ libro.titulo }}</p>
+            <button (click)="eliminar(libro.id_db)" class="btn btn-danger btn-sm">
+              Eliminar
+            </button>
+          </div>
+        </div>
+
+      </div>
+    }
+  </div>
+
+  @if (misFavoritos.length === 0) {
+    <p class="text-center">No hay libros guardados.</p>
+  }
+</div>
