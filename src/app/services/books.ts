@@ -3,51 +3,48 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-// interfaz de libro con los campos que uso
 export interface Libro {
   titulo: string;
   autor: string;
-  portadaUrl?: string;
+  portadaUrl: string;
   id: string;
-  descripcion?: string;
+  descripcion: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class LibrosService {
   private http = inject(HttpClient);
+  private apiUrl = 'https://openlibrary.org';
 
   buscarLibros(consulta: string): Observable<Libro[]> {
-    const url = `https://openlibrary.org/search.json?q=${consulta}`;
-
-    return this.http.get<any>(url).pipe(
-      map(res => {
-        const primeros = res.docs.slice(0, 10);
-
-        return primeros.map((doc: any) => ({
-          titulo: doc.title,
-          autor: doc.author_name ? doc.author_name[0] : 'Desconocido',
-          portadaUrl: doc.cover_i
-            ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`
-            : '',
-          id: doc.key.replace('/works/', '')
-        }));
-      })
+    return this.http.get<any>(`${this.apiUrl}/search.json?q=${consulta}`).pipe(
+      map(res => res.docs.slice(0, 10).map((doc: any) => this.mapearLibroBusqueda(doc)))
     );
   }
 
   getLibroPorId(id: string): Observable<Libro> {
-    const url = `https://openlibrary.org/works/${id}.json`;
-
-    return this.http.get<any>(url).pipe(
-      map(res => ({
-        titulo: res.title,
-        autor: res.by_statement || 'Autor desconocido',
-        portadaUrl: res.covers ? `https://covers.openlibrary.org/b/id/${res.covers[0]}-L.jpg` : '',
-        descripcion: res.description
-                     ? (typeof res.description === 'string' ? res.description : res.description.value)
-                     : '',
-        id: id
-      }))
+    return this.http.get<any>(`${this.apiUrl}/works/${id}.json`).pipe(
+      map(res => this.mapearLibroDetalle(res, id))
     );
+  }
+
+  private mapearLibroBusqueda(doc: any): Libro {
+    return {
+      titulo: doc.title,
+      autor: doc.author_name?.[0] || 'Desconocido',
+      portadaUrl: doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : '',
+      id: doc.key.replace('/works/', ''),
+      descripcion: ''
+    };
+  }
+
+  private mapearLibroDetalle(res: any, id: string): Libro {
+    return {
+      titulo: res.title,
+      autor: res.by_statement || 'Autor desconocido',
+      portadaUrl: res.covers?.[0] ? `https://covers.openlibrary.org/b/id/${res.covers[0]}-L.jpg` : '',
+      descripcion: typeof res.description === 'string' ? res.description : res.description?.value || '',
+      id
+    };
   }
 }

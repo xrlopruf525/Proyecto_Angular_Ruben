@@ -36,8 +36,8 @@ export class BookDetail {
     const libroActual = this.libro();
 
     if (libroActual) {
-      this.firebaseService.guardarLibro(libroActual)
-        .then(() => {
+      this.firebaseService.guardarLibro(libroActual).subscribe({
+        next: () => {
           Swal.fire({
             position: 'top-end',
             icon: 'success',
@@ -45,15 +45,16 @@ export class BookDetail {
             showConfirmButton: false,
             timer: 1500,
           });
-        })
-        .catch(err => {
+        },
+        error: (err) => {
           console.error('Error:', err);
           Swal.fire({
             icon: 'error',
             title: 'ERROR',
             text: 'No se pudo guardar en la base de datos',
           });
-        });
+        }
+      });
     }
   }
 }

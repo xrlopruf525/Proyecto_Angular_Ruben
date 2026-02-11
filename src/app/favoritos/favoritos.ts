@@ -19,7 +19,7 @@ export class Favoritos {
   }
 
   cargarFavoritos() {
-    this.firebaseService.getFavoritos().then(data => {
+    this.firebaseService.getFavoritos().subscribe(data => {
       this.misFavoritos = data;
     });
   }
@@ -36,7 +36,7 @@ export class Favoritos {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.firebaseService.borrarLibro(id).then(() => {
+        this.firebaseService.borrarLibro(id).subscribe(() => {
           this.cargarFavoritos();          
           Swal.fire({
             title: '¡Eliminado!',
