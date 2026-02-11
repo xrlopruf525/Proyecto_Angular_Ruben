@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';  // <-- aquí signal
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Libro, LibrosService } from '../services/books';
 
@@ -10,15 +10,15 @@ import { Libro, LibrosService } from '../services/books';
   styleUrls: ['./home.css'],
 })
 export class Home {
-  libros = signal<Libro[]>([]);  // aquí guardo los libros destacados
+  libros = signal<Libro[]>([]);
 
   constructor(private librosService: LibrosService) {
     this.cargarDestacados();
   }
 
   cargarDestacados() {
-    this.librosService.buscarLibros('harry potter').subscribe(data => {
-      this.libros.set(data.slice(0, 7)); // solo 7 libros
+    this.librosService.buscarLibros('harry potter').subscribe(datos => {
+      this.libros.set(datos.slice(0, 7));
     });
   }
 }

@@ -1,6 +1,5 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// Importamos lo necesario para formularios (Reactive)
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import emailjs from '@emailjs/browser';
 import Swal from 'sweetalert2';
@@ -12,10 +11,8 @@ import Swal from 'sweetalert2';
   templateUrl: './contacto.html'
 })
 export class Contacto {
-  // Signal para mostrar el mensaje de éxito en la pantalla sin usar alert
   enviadoConExito = signal(false);
 
-  // Definimos el formulario y sus reglas (validaciones)
   contactoForm = new FormGroup({
     nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),

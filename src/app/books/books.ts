@@ -11,15 +11,14 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './books.html'
 })
 export class Books {
-  libros = signal<Libro[]>([]); // lista de libros en memoria
-  cargando = signal(false); // flag de carga
+  libros = signal<Libro[]>([]);
+  cargando = signal(false);
 
-  private _filtroTitulo = signal(''); // filtro de título
-  private _filtroAutor = signal(''); // filtro de autor
+  private _filtroTitulo = signal('');
+  private _filtroAutor = signal('');
 
   constructor(private librosService: LibrosService, private router: Router) {}
 
-  // getter/setter para ngModel (porque signal)
   get filtroTitulo(): string { return this._filtroTitulo(); }
   set filtroTitulo(valor: string) { this._filtroTitulo.set(valor); }
 
@@ -27,26 +26,24 @@ export class Books {
   set filtroAutor(valor: string) { this._filtroAutor.set(valor); }
 
   buscarLibros() {
-    const query = this.filtroTitulo || this.filtroAutor || ''; // cojo lo que haya
-    if (!query) return; // si no hay nada, no busco
+    const consulta = this.filtroTitulo || this.filtroAutor || '';
+    if (!consulta) return;
 
-    this.cargando.set(true); // pongo loading
+    this.cargando.set(true);
 
-    // buscar en la API usando lo que haya escrito
-    this.librosService.buscarLibros(query).subscribe(data => {
-      // filtro extra por autor si lo escribiste
-      let filtrados = data;
-      const autor = this.filtroAutor.toLowerCase();
-      if (autor) {
-        filtrados = filtrados.filter(libro => libro.author.toLowerCase().includes(autor));
+    this.librosService.buscarLibros(consulta).subscribe(datos => {
+      let filtrados = datos;
+      const autorBuscado = this.filtroAutor.toLowerCase();
+      if (autorBuscado) {
+        filtrados = filtrados.filter(libro => libro.autor.toLowerCase().includes(autorBuscado));
       }
 
-      this.libros.set(filtrados); // guardo resultados
-      this.cargando.set(false); // ya terminó
+      this.libros.set(filtrados);
+      this.cargando.set(false);
     });
   }
 
-  navigateToHome() {
-    this.router.navigateByUrl('/home'); // botón volver
+  irAInicio() {
+    this.router.navigateByUrl('/home');
   }
 }

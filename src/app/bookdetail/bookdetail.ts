@@ -14,27 +14,27 @@ import Swal from 'sweetalert2';
   templateUrl: './bookdetail.html'
 })
 export class BookDetail {
-  libro = signal<Libro | null>(null); // aquí guardo el libro
-  cargando = signal(true); // flag de carga
-
-  constructor(private route: ActivatedRoute, private librosService: LibrosService) {}
-
-  ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id'); // pillo el id de la url
-    if (!id) return; // si no hay id, paso
-
-    this.cargando.set(true); // marco que está cargando
-    this.librosService.getLibroById(id).subscribe(data => {
-      this.libro.set(data); // guardo el libro
-      this.cargando.set(false); // ya terminó
-    });
-  }
+  libro = signal<Libro | null>(null);
+  cargando = signal(true);
 
   private firebaseService = inject(FirebaseService);
 
+  constructor(private ruta: ActivatedRoute, private librosService: LibrosService) {}
+
+  ngOnInit() {
+    const id = this.ruta.snapshot.paramMap.get('id');
+    if (!id) return;
+
+    this.cargando.set(true);
+    this.librosService.getLibroPorId(id).subscribe(datos => {
+      this.libro.set(datos);
+      this.cargando.set(false);
+    });
+  }
+
   agregarAFavoritos() {
     const libroActual = this.libro();
-    
+
     if (libroActual) {
       this.firebaseService.guardarLibro(libroActual)
         .then(() => {
@@ -56,5 +56,4 @@ export class BookDetail {
         });
     }
   }
-
 }

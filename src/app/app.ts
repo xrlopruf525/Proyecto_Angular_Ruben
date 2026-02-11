@@ -8,12 +8,11 @@ import { RouterModule, RouterOutlet, Router } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('Proyecto_Angular_Ruben');
+  protected readonly titulo = signal('Proyecto_Angular_Ruben');
   constructor(private router: Router) {}
 
-  goToBooks() {
-    console.log('Click en Libros'); // debug en consola
-    this.router.navigateByUrl('/books'); // fuerza recarga del componente
+  irALibros() {
+    this.router.navigateByUrl('/books');
   }
 }
 

@@ -19,7 +19,7 @@ export class Favoritos {
   }
 
   cargarFavoritos() {
-    this.firebaseService.getFavoritos().subscribe(data => {
+    this.firebaseService.getFavoritos().then(data => {
       this.misFavoritos = data;
     });
   }

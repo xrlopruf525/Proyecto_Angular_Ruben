@@ -37,8 +37,8 @@
               <div class="carousel-item" [class.active]="i === 0">
                 <div class="text-center">
                   <!-- imagen con tamaño fijo -->
-                  <img [src]="libro.coverUrl" style="height: 200px;" alt="Portada">
-                  <h5 class="mt-2">{{ libro.title }}</h5>
+                  <img [src]="libro.portadaUrl" style="height: 200px;" alt="Portada">
+                  <h5 class="mt-2">{{ libro.titulo }}</h5>
                 </div>
               </div>
             }
@@ -67,7 +67,9 @@
       <!-- links con margen derecho -->
       <a routerLink="/home" class="me-3">Inicio</a>
       <a routerLink="/books" class="me-3">Libros</a>
+      <a routerLink="/favoritos" class="me-3">Favoritos</a>
       <a routerLink="/contacto">Contacto</a>
+
     </p>
   </div>
 </footer>
